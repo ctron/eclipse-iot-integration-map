@@ -1,0 +1,21 @@
+{
+  "name": "eclipse-iot-project-map",
+  "version": "1.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ctron/eclipse-iot-project-map.git"
+  },
+  "scripts": {},
+  "author": "Jens Reimann",
+  "license": "EPL-2.0",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.11",
+    "popper.js": "^1.14.4",
+    "svg-pan-zoom": "^3.5.3",
+    "svg.filter.js": "^2.0.2",
+    "svg.js": "^2.6.6"
+  }
+}
