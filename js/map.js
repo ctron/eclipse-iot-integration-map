@@ -13,10 +13,11 @@ var ly = lx * s; // length y
 
 // class Application
 
-function Application(name, color, tags, image, libraries, description) {
+function Application(name, color, tags, url, image, libraries, description) {
 	this.name = name; 
 	this.color = color;
 	this.tags = tags;
+	this.url = url;
 	this.image = image;
 	this.libraries = libraries;
 	this.description = description;
@@ -29,7 +30,7 @@ Application.prototype.onClick = function() {
 		if ( lib ) libs.push(lib);
 	});
 	var ints = this.findIntegrations();
-	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.description, [
+	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.url, this.description, [
 		buildReferences("Integrates with", ints),
 		buildReferences("Uses", libs)
 	]);
@@ -81,10 +82,11 @@ function Integration(app1, app2, links) {
 
 // class Library
 
-function Library(name, color, tags, image, description, usedBy) {
+function Library(name, color, tags, url, image, description, usedBy) {
 	this.name = name;
 	this.color = color;
 	this.tags = tags;
+	this.url = url;
 	this.image = image;
 	this.description = description;
 	this.usedBy = usedBy;
@@ -108,7 +110,7 @@ Library.prototype.findApps = function () {
 
 Library.prototype.onClick = function () {
 	var apps = this.findApps();
-	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.description, [
+	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.url, this.description, [
 		buildReferences("Used by", apps)
 	]);
 }
@@ -182,12 +184,15 @@ function buildReferences(label,references) {
 	return refs;
 }
 
-function setDescription ( name, description, groups ) {
+function setDescription ( name, url, description, groups ) {
 
 	if ( name ) {
 		
 		$('#description-title').html(name);
 		$('#description-content').html(description);
+		if ( url ) {
+			$('#description-content').append('<a class="card-link" href="' + url + '" target="_blank">Project Homepage</a>');
+		}
 		$('#description-groups > li').remove();
 		$('#description-extras').remove();
 
