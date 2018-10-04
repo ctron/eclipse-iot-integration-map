@@ -251,7 +251,20 @@ function roof(svg, building, level, color, onClick) {
 	}
 }
 
+function background(svg, building, numLevels, color) {
+	var l = numLevels*lh;
+	var p = new SVG.PointArray([
+		[-lx, 0], [0, ly], [lx, 0],
+		[lx, -l], [0, -l-ly], [-lx, -l]
+	]);
+
+	building.add(svg.polygon(p).fill(color));
+}
+
 function building (svg, building, numLevels, libraries) {
+
+	// draw background to reduce bleed through of the background
+	background(svg, building, numLevels, '#dee9ef');
 
 	level(svg, building, 0, numLevels, '#b8d0dc', '#dee9ef')
 	roof(svg, building, numLevels, '#eaf1f5');
