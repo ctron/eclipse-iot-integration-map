@@ -13,9 +13,10 @@ var ly = lx * s; // length y
 
 // class Application
 
-function Application(name, color, image, libraries, description) {
+function Application(name, color, tags, image, libraries, description) {
 	this.name = name; 
 	this.color = color;
+	this.tags = tags;
 	this.image = image;
 	this.libraries = libraries;
 	this.description = description;
@@ -28,7 +29,7 @@ Application.prototype.onClick = function() {
 		if ( lib ) libs.push(lib);
 	});
 	var ints = this.findIntegrations();
-	setDescription ( this.name, this.description, [
+	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.description, [
 		buildReferences("Integrates with", ints),
 		buildReferences("Uses", libs)
 	]);
@@ -80,9 +81,10 @@ function Integration(app1, app2, links) {
 
 // class Library
 
-function Library(name, color, image, description, usedBy) {
+function Library(name, color, tags, image, description, usedBy) {
 	this.name = name;
 	this.color = color;
+	this.tags = tags;
 	this.image = image;
 	this.description = description;
 	this.usedBy = usedBy;
@@ -106,7 +108,7 @@ Library.prototype.findApps = function () {
 
 Library.prototype.onClick = function () {
 	var apps = this.findApps();
-	setDescription ( this.name, this.description, [
+	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.description, [
 		buildReferences("Used by", apps)
 	]);
 }
@@ -130,6 +132,25 @@ Library.prototype.drawBlock = function (svg) {
 }
 
 // global
+
+function makeHeading(name, tags) {
+	var result = "";
+	result += _.escape(name);
+	return result;
+}
+
+function makeTags(tags, wrapper) {
+	if ( !tags ) {
+		return "";
+	}
+
+	var result = " <" + wrapper + ">";
+	tags.forEach(function(tag){
+		result += "<span class='badge badge-secondary'>" + _.escape(tag) + "</span>";
+	});
+	result += "</" + wrapper + ">";
+	return result;
+}
 
 function integrate(app1, app2, links) {
 	var integration = new Integration(app1,app2, links);
@@ -165,7 +186,7 @@ function setDescription ( name, description, groups ) {
 
 	if ( name ) {
 		
-		$('#description-title').text(name);
+		$('#description-title').html(name);
 		$('#description-content').html(description);
 		$('#description-groups > li').remove();
 		$('#description-extras').remove();
