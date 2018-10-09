@@ -133,7 +133,9 @@ integrate(ditto,hono, [
 	{name: 'Blog Post', href: 'https://www.eclipse.org/ditto/2018-05-02-connecting-ditto-hono.html'},
 	{name: 'Example', href: 'https://github.com/eclipse/ditto-examples/tree/master/octopus-via-hono'}
 ]);
-integrate(kura,kapua);
+integrate(kura,kapua, [
+	{name: 'Documentation', href: 'https://eclipse.github.io/kura/cloud/kura-kapua.html'}
+]);
 integrate(kura,hono);
 
 var libraries = [californium, milo, paho];
