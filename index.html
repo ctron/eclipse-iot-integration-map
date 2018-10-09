@@ -136,7 +136,9 @@ integrate(ditto,hono, [
 integrate(kura,kapua, [
 	{name: 'Documentation', href: 'https://eclipse.github.io/kura/cloud/kura-kapua.html'}
 ]);
-integrate(kura,hono);
+integrate(kura,hono, [
+	{name: 'Example from tutorial', href: 'https://github.com/redhat-iot/iot-cloud-stack-ece2018/tree/master/steps/07-kura-part-2'}
+]);
 
 var libraries = [californium, milo, paho];
 var applications = [ditto, hono, kapua, kura];
