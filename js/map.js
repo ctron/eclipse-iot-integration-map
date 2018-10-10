@@ -373,11 +373,10 @@ function drawApplication(svg, numLevels, x, y, color, image, libraries, onClick)
 }
 
 function toIso(x,y) {
-	// var bw = lx*2*0.82;
-	// var bh = ly*2*0.82;
+	var t = Math.cos(45*Math.PI/180);
 
-	var bw = bs*2*0.353;
-	var bh = bs*2*0.355*s;
+	var bw = bs*t;
+	var bh = bs*t*s;
 
 	var ix = (mw/2) + ((x-y) * bw); 
 	var iy = (mh/2) + ((x+y) * bh) - pullup;
