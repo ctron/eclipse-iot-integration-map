@@ -4,12 +4,10 @@ var mw = 1200;
 var mh = 900;
 var pullup = 0;
 var spacing = 40; // spacing = 0;
-// var lx = ( bs - spacing ) / 2; // building size
-var lx = (Math.cos(45*Math.PI/180)*((bs-spacing)));
 var lh = 15; // level height
 var s = 0.5;
 
-var ly = lx * s; // length y
+var buildingColors = ['#dee9ef', '#b8d0dc', '#eaf1f5'];
 
 // class Application
 
@@ -118,7 +116,7 @@ Library.prototype.onClick = function () {
 Library.prototype.drawLevel = function (svg, group, l) {
 	var color2 = new SVG.Color(this.color).morph('#000').at(0.3).toHex();
 	var t = this;
-	level(svg, group, l, l+1, color2, this.color, function(){ t.onClick(); });
+	level(svg, group, bs-spacing, bs-spacing, l*lh, lh, color2, this.color, function(){ t.onClick(); });
 }
 
 Library.prototype.drawBlock = function (svg) {
@@ -127,13 +125,31 @@ Library.prototype.drawBlock = function (svg) {
 
 	var g = svg.group();
 
-	level(svg, g, 0, 1, color2, this.color);
-	roof(svg,g,1,color3);
+	drawBuilding(svg,g,1,[this.color, color2, color3]);
 
 	return g;
 }
 
 // global
+
+var isoMatrix = new SVG.Matrix().scale(1,s).rotate(45);
+var isoTextMatrix = new SVG.Matrix().scale(1,s).rotate(-45).skew(-45,0);
+
+var signColors = [ '#e8e2c3', '#b2ad8f', '#f8f2d3'];
+
+function createSign(svg,label) {
+	var g = svg.group();
+	drawBox(svg, g, 15, 15, 0, lh, signColors);
+	drawBox(svg, g, 5, 5, lh, lh*2, signColors);
+	drawBox(svg, g, 10, 150, lh*3, lh*4.5, signColors);
+	var label = svg.text(label);
+	label.font({family: 'Arial, Helvetica, sans-serif', size: 30, weight: 700, anchor: "middle"});
+	label.transform(isoTextMatrix);
+	label.move(5,-lh*9.5);
+	label.fill('#7f7a5f');
+	g.add(label);
+	return g;
+}
 
 function makeHeading(name, tags) {
 	var result = "";
@@ -215,16 +231,18 @@ function setDescription ( name, url, description, groups ) {
 	}
 }
 
-function level(svg, group, start, end, color1, color2, onClick) {
+function iso(x,y,h) {
+	var p = new SVG.Point(x,y).transform(isoMatrix);
+	return [p.x, p.y-h];
+}
 
-	var s = start * lh;
-	var e = end * lh;
+function level(svg, group, bx, by, offset, height, color1, color2, onClick) {
 
 	var p1 = new SVG.PointArray([
-		[-lx, -s], [0, ly-s], [0, ly-e], [-lx, -e]
+		iso(-bx/2, by/2, offset), iso(bx/2, by/2, offset), iso(bx/2, by/2, offset+height), iso(-bx/2, by/2, offset+height)
 	]);
 	var p2 = new SVG.PointArray([
-		[0, -s+ly], [lx, -s], [lx, -e], [0, -e+ly]
+		iso(bx/2, by/2, offset), iso(bx/2, -by/2, offset), iso(bx/2, -by/2, offset+height), iso(bx/2, by/2, offset+height)
 	]);
 
 	var g = svg.group();
@@ -241,11 +259,9 @@ function level(svg, group, start, end, color1, color2, onClick) {
 	group.add(g);
 }
 
-function roof(svg, building, level, color, onClick) {
-	var l = level*lh;
-
+function roof(svg, building, bx, by, height, color, onClick) {
 	var p = new SVG.PointArray([
-		[-lx, -l], [0, -l+ly], [lx, -l], [0, -l-ly]
+		iso(-bx/2, by/2, height), iso(bx/2, by/2, height), iso(bx/2, -by/2, height), iso(-bx/2,-by/2, height)
 	]);
 
 	var r = svg.polygon(p).fill(color);
@@ -256,23 +272,34 @@ function roof(svg, building, level, color, onClick) {
 	}
 }
 
-function background(svg, building, numLevels, color) {
-	var l = numLevels*lh;
+function background(svg, building, bx, by, offset, height, color) {
+
+	var t = Math.cos(45*Math.PI/180);
+	var lx = t*bx;
+	var ly = t*s*by;
+
 	var p = new SVG.PointArray([
-		[-lx, 0], [0, ly], [lx, 0],
-		[lx, -l], [0, -l-ly], [-lx, -l]
+		iso(-bx/2, by/2, offset), iso(bx/2, by/2, offset), iso(bx/2, -by/2, offset),
+		iso(bx/2, -by/2, offset+height), iso(-bx/2, -by/2, offset+height), iso(-bx/2, by/2, offset+height),
 	]);
 
 	building.add(svg.polygon(p).fill(color));
 }
 
+function drawBox(svg, building, bx, by, offset, height, colors) {
+	// draw background to reduce bleed through of background color
+	background(svg, building, bx, by, offset, height, colors[0]);
+	level(svg, building, bx, by, offset, height, colors[1], colors[0])
+	roof(svg, building, bx, by, offset+height, colors[2]);
+}
+
+function drawBuilding(svg, building, numLevels, colors) {
+	drawBox(svg, building, bs-spacing, bs-spacing, 0, numLevels*lh, colors);
+}
+
 function building (svg, building, numLevels, libraries) {
 
-	// draw background to reduce bleed through of the background
-	background(svg, building, numLevels, '#dee9ef');
-
-	level(svg, building, 0, numLevels, '#b8d0dc', '#dee9ef')
-	roof(svg, building, numLevels, '#eaf1f5');
+	drawBuilding(svg, building, numLevels, buildingColors);
 
 	if ( libraries ) {
 		for ( i = 0; i < libraries.length; i++ ) {
@@ -319,6 +346,9 @@ function marker(svg, b, numLevels, color, image, onClick) {
 	g.attr('cursor', 'pointer' );
 
 	g2.add(g);
+
+	var t = Math.cos(45*Math.PI/180);
+	var ly = t*s*(bs-spacing);
 	g2.move(0,-l-ly);
 
 	b.add(g2);
@@ -354,7 +384,6 @@ function isometric (x, y, consumer) {
 	consumer ( iso[0], iso[1] );
 }
 
-
 function runMap(m,f) {
 	for ( y = 0; y < m.length; y ++ ) {
 		for ( x = 0; x < m[y].length; x++ ) {
@@ -389,6 +418,9 @@ function listProjects(libraries) {
 	var imageWidth = bs*1.2;
 	var pullup = 0.8;
 	var imageHeight = bs*0.8;
+
+	var t = Math.cos(45*Math.PI/180);
+	var ly = t*s*(bs-spacing);
 
 	var i = 0;
 	libraries.forEach(function(p){

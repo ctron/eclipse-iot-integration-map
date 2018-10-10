@@ -200,6 +200,9 @@ function renderMap() {
 	});
 
 	runMap(m, function(tile, x, y) { tile.draw(svg, x,y); });
+
+	isometric(0,5, function(ix,iy) { createSign(svg,"Gateway\nLand").move(ix,iy); });
+	isometric(7,5, function(ix,iy) { createSign(svg,"Cloud\nLand").move(ix,iy); });
 }
 
 setDescription(); // to default
