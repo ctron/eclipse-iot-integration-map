@@ -106,7 +106,7 @@
 					<div class="card" id="description-card">
 						<div class="card-body">
 							<h3 id="description-title"></h3>
-							<div class="card-text" id="description-content"></div>
+							<div id="description-content"></div>
 						</div>
 						<ul class="list-group list-group-flush" id="description-groups">
 						</ul>
@@ -201,8 +201,12 @@ function renderMap() {
 
 	runMap(m, function(tile, x, y) { tile.draw(svg, x,y); });
 
-	isometric(0,5, function(ix,iy) { createSign(svg,"Gateway\nLand").move(ix,iy); });
-	isometric(7,5, function(ix,iy) { createSign(svg,"Cloud\nLand").move(ix,iy); });
+	isometric(0,5, function(ix,iy) { createSign(svg,"Gateway\nLand", function(){
+		setDescription("Gateway", null, "The IoT gateway acts as the aggregation point for a group of sensors and actuators to coordinate the connectivity of these devices to each other and to an external network.", [buildReferences("See Also", [{name: "Whitepaper - IoT Architectures", href: "https://iot.eclipse.org/resources/white-papers/Eclipse%20IoT%20White%20Paper%20-%20The%20Three%20Software%20Stacks%20Required%20for%20IoT%20Architectures.pdf"}])]);
+	}).move(ix,iy); });
+	isometric(7,5, function(ix,iy) { createSign(svg,"Cloud\nLand", function(){
+		setDescription("Cloud", null, "An IoT Cloud Platform typically operates on a cloud infrastructure or inside an enterprise data center and is expected to scale both horizontally, to support the large number of devices connected, as well as vertically to address the variety of IoT solutions", [buildReferences("See Also", [{name: "Whitepaper - IoT Architectures", href: "https://iot.eclipse.org/resources/white-papers/Eclipse%20IoT%20White%20Paper%20-%20The%20Three%20Software%20Stacks%20Required%20for%20IoT%20Architectures.pdf"}])]);
+	}).move(ix,iy); });
 }
 
 setDescription(); // to default

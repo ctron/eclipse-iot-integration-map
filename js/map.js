@@ -28,7 +28,7 @@ Application.prototype.onClick = function() {
 		if ( lib ) libs.push(lib);
 	});
 	var ints = this.findIntegrations();
-	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.url, this.description, [
+	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), { label: 'Project Homepage', href: this.url}, this.description, [
 		buildReferences("Integrates with", ints),
 		buildReferences("Uses", libs)
 	]);
@@ -108,7 +108,7 @@ Library.prototype.findApps = function () {
 
 Library.prototype.onClick = function () {
 	var apps = this.findApps();
-	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), this.url, this.description, [
+	setDescription ( makeHeading(this.name) + makeTags(this.tags, "small"), {"label": "Project Homepage", href: this.url}, this.description, [
 		buildReferences("Used by", apps)
 	]);
 }
@@ -137,7 +137,7 @@ var isoTextMatrix = new SVG.Matrix().scale(1,s).rotate(-45).skew(-45,0);
 
 var signColors = [ '#e8e2c3', '#b2ad8f', '#f8f2d3'];
 
-function createSign(svg,label) {
+function createSign(svg,label,onclick) {
 	var g = svg.group();
 	drawBox(svg, g, 15, 15, 0, lh, signColors);
 	drawBox(svg, g, 5, 5, lh, lh*2, signColors);
@@ -148,6 +148,10 @@ function createSign(svg,label) {
 	label.move(5,-lh*9.5);
 	label.fill('#7f7a5f');
 	g.add(label);
+	if ( onclick ) {
+		g.click(onclick);
+		g.attr('cursor', 'pointer');
+	}
 	return g;
 }
 
@@ -181,9 +185,10 @@ function buildReferences(label,references) {
 	if ( references && references.length > 0 ) {
 		refs += "<h5 class='card-title'>" + _.escape(label) + "</h5><ul>";
 		references.forEach(function(ref){
-			refs += "<li>" + _.escape(ref.name) + "</li>";
-			console.log(ref);
-			if ( ref.links ) {
+			if ( ref.href ) {
+				refs += "<li><a target='_blank' href='" + ref.href + "'>" + _.escape(ref.name) + "</a></li>";
+			} else if ( ref.links && ref.links.length > 0 ) {
+				refs += "<li>" + _.escape(ref.name);
 				refs+="<ul class='links'>"
 				ref.links.forEach(function(link){
 					if ( typeof link == "string" ) {
@@ -192,7 +197,9 @@ function buildReferences(label,references) {
 						refs+="<li><a href='" +  link.href + "' target='_blank'>" + _.escape(link.name) + "</a></li>";
 					}
 				});
-				refs+="</ul>";
+				refs+="</ul></li>";
+			} else if ( ref.name ){
+				refs += "<li>" + _.escape(ref.name) + "</li>";
 			}
 		});
 		refs += "</ul>";
@@ -203,11 +210,11 @@ function buildReferences(label,references) {
 function setDescription ( name, url, description, groups ) {
 
 	if ( name ) {
-		
+
 		$('#description-title').html(name);
 		$('#description-content').html(description);
 		if ( url ) {
-			$('#description-content').append('<a class="card-link" href="' + url + '" target="_blank">Project Homepage</a>');
+			$('#description-content').append('<a class="card-link" href="' + url.href + '" target="_blank">' + _.escape(url.label) + '</a>');
 		}
 		$('#description-groups > li').remove();
 		$('#description-extras').remove();
@@ -225,8 +232,7 @@ function setDescription ( name, url, description, groups ) {
 
 	} else {
 		$('#description-title').text("Eclipse IoT");
-		$('#description-content').html("Eclipse IoT provides the technology needed to build IoT Devices, Gateways, and Cloud Platforms.");
-		$('#description-card').append('<div id="description-extras" class="card-body"><a target="_blank" href="https://iot.eclipse.org" class="btn btn-primary">Learn more</a></div>');
+		$('#description-content').html("<p class='card-text'>Eclipse IoT provides the technology needed to build IoT Devices, Gateways, and Cloud Platforms.</p><p class='card-text'>This map provides an entry point, to learn about the different integrations between Eclipse IoT projects.</p><a target='_blank' href='https://iot.eclipse.org' class='btn btn-primary'>Learn more</a>");
 		$('#description-groups > li').remove();
 	}
 }
@@ -488,8 +494,8 @@ function createPath ( svg, path, width, color) {
 }
 
 function easter1() {
-	setDescription("Data Lake", "Wikipedia: <a href='https://en.wikipedia.org/wiki/Data_lake'>Data Lake</a>");
+	setDescription("Data Lake", null, "Everything flows into the Data Lake.", [buildReferences("See Also",[{name: "Wikipedia", href: "https://en.wikipedia.org/wiki/Data_lake"}])] );
 }
 function easter2() {
-	setDescription("Data River", "Some call it a data river.");
+	setDescription("Data River", null, "Some call it a data river.");
 }
