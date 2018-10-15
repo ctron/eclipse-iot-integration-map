@@ -405,8 +405,7 @@ function eb(numLevels) {
 }
 
 function translateBackground(svg,g) {
-	g.center(600,680+35);
-	g.scale(1,s).rotate(45);
+	g.scale(1,s).rotate(45).move(bs*9.8,bs*6.4)
 	var g2 = svg.group();
 	g2.add(g);
 	g2.dy(-pullup);
