@@ -208,11 +208,12 @@ function renderMap() {
 
 		var font = {family: 'Arial, Helvetica, sans-serif', size: 70, weight: 700, anchor: "middle"};
 
-		var l1 = svg.text("Cloud Land").font(font).fill('#7f7a5f').move(bs*8,bs*5.5).rotate(-90);
+		var labelColor = '#b8d0dc';
+		var l1 = svg.text("Cloud Land").font(font).fill(labelColor).move(bs*8,bs*5.5).rotate(-90);
 		l1.attr('cursor','pointer');
 		l1.click(cloudDesc);
 		g.add(l1);
-		var l2 = svg.text("Gateway Land").font(font).fill('#7f7a5f').move(bs*0.5,bs*4).rotate(-90);
+		var l2 = svg.text("Gateway Land").font(font).fill(labelColor).move(bs*0.5,bs*4).rotate(-90);
 		g.add(l2);
 		l2.attr('cursor','pointer');
 		l2.click(gwDesc);
