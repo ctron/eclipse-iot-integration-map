@@ -121,7 +121,7 @@
 <script>
 
 var californium = new Library("Eclipse Californium", '#ffb873', ["Library"], 'https://eclipse.org/californium', {src: 'images/californium-180.png'}, '<p>Californium is a powerful CoAP framework targetting back-end services for small Internet of Things (IoT) devices using other embedded coap implementations. It may also be used on stronger (IoT) devices. It provides a convenient API for RESTful Web services that support all of CoAP\'s features.</p>');
-var milo = new Library("Eclipse Milo", '#fb85f5', ["Library"], 'https://eclipse.org/milo', {src: 'images/milo.svg'}, '<p>Milo is an open-source implementation of OPC UA. It includes a high-performance stack (channels, serialization, data structures, security) as well as client and server SDKs built on top of the stack.</p>');
+var milo = new Library("Eclipse Milo", '#fb85f5', ["Library"], 'https://eclipse.org/milo', {src: 'images/milo_fullogo_4WEB_181020.svg'}, '<p>Milo is an open-source implementation of OPC UA. It includes a high-performance stack (channels, serialization, data structures, security) as well as client and server SDKs built on top of the stack.</p>');
 var paho = new Library("Eclipse Paho", '#a59cff', ["Library"], 'https://eclipse.org/paho', {src: 'images/paho_logo.svg'}, '<p>The Eclipse Paho project provides open-source client implementations of MQTT and MQTT-SN messaging protocols aimed at new, existing, and emerging applications for the Internet of Things (IoT).</p>');
 
 var ditto = new Application ( "Eclipse Ditto", "#2ccbca", ["Cloud"], 'https://eclipse.org/ditto', {src: "images/ditto.svg"}, [ null, null, null, null, null], '<p>Eclipse Ditto is a technology in the IoT implementing a software pattern called "Digital Twins". A Digital Twin is a virtual, cloud based, representation of his real world counterpart (real world “Things”, e.g. devices like sensors, smart heating, connected cars, smart grids, EV charging stations, …).</p>');
@@ -208,7 +208,7 @@ function renderMap() {
 
 		var font = {family: 'Arial, Helvetica, sans-serif', size: 70, weight: 700, anchor: "middle"};
 
-		var labelColor = '#b8d0dc';
+		var labelColor = '#ddd';
 		var l1 = svg.text("Cloud Land").font(font).fill(labelColor).move(bs*8,bs*5.5).rotate(-90);
 		l1.attr('cursor','pointer');
 		l1.click(cloudDesc);
