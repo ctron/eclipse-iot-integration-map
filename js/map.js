@@ -415,6 +415,9 @@ function listProjects(libraries) {
 	var lsvg = SVG('libraries');
 	var lgroup = lsvg.group();
 
+	lsvg.attr('class', 'img-fluid');
+	lsvg.attr('style', 'width: 100%;');
+
 	var i = 0;
 	var offsetX = 50;
 	var offsetY = bs * 2;
@@ -441,6 +444,7 @@ function listProjects(libraries) {
 		i++;
 	});
 
+	lsvg.viewbox(0, 0, imageWidth + bs + offsetX, offsetY + libraries.length*spa);
 }
 
 function createBackgroundFor(svg,m,creator) {
