@@ -218,6 +218,7 @@ function setDescription ( name, url, description, groups ) {
 		}
 		$('#description-groups > li').remove();
 		$('#description-extras').remove();
+		$('#fork-me').hide();
 
 		if ( groups ) {
 			groups.forEach(function(group){
@@ -231,9 +232,12 @@ function setDescription ( name, url, description, groups ) {
 		}
 
 	} else {
+
 		$('#description-title').text("Eclipse IoT");
-		$('#description-content').html("<p class='card-text'>Eclipse IoT provides the technology needed to build IoT Devices, Gateways, and Cloud Platforms.</p><p class='card-text'>This map provides an entry point, to learn about the different integrations between Eclipse IoT projects.</p><a target='_blank' href='https://iot.eclipse.org' class='btn btn-primary'>Learn more</a>");
+		$('#description-content').html("<p class='card-text'>Eclipse IoT provides the technology needed to build IoT Devices, Gateways, and Cloud Platforms.</p><p class='card-text'>This map provides an entry point, to learn about the different integrations between Eclipse IoT projects.</p><p>Eclipse IoT has more projects than the ones shows here, this map only shows projects integrating with each other.</p><a target='_blank' href='https://iot.eclipse.org' class='btn btn-primary'>Learn more</a> <a href='https://iot.eclipse.org/projects' target='blank' class='btn btn-light'>See all projects</a>");
 		$('#description-groups > li').remove();
+		$('#fork-me').show();
+
 	}
 }
 
