@@ -149,8 +149,8 @@ var kura  = new Application ( "Eclipse Kura", "#d92626", ["Gateway"], 'https://e
 var kapua = new Application ( "Eclipse Kapua", "#3345cc", ["Cloud"], 'https://eclipse.org/kapua', {src: "images/kapua-logo.png"}, [ null, null, null, paho, null, null, null], '<p>Modular IoT cloud platform to manage and integrate devices and their data. A solid integrated foundation of IoT services for any IoT application.</p>');
 
 integrate(ditto,hono, [
-    {name: 'Blog Post: Telemetry&Events', href: 'https://www.eclipse.org/ditto/2018-05-02-connecting-ditto-hono.html'},
-    {name: 'Blog Post: Command&Control', href: 'https://www.eclipse.org/ditto/2018-12-05-example-command-and-control.html'},
+	{name: 'Blog Post: Telemetry&Events', href: 'https://www.eclipse.org/ditto/2018-05-02-connecting-ditto-hono.html'},
+	{name: 'Blog Post: Command&Control', href: 'https://www.eclipse.org/ditto/2018-12-05-example-command-and-control.html'},
 	{name: 'Example', href: 'https://github.com/eclipse/ditto-examples/tree/master/octopus-via-hono'}
 ]);
 integrate(kura,kapua, [
